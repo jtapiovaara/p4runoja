@@ -1,4 +1,4 @@
-{% extends 'runoListaweb.html' %}
+{% extends 'runoApp/runoListaweb.html' %}
 
 {% block page_content %}
     <center>
@@ -7,7 +7,7 @@
         <form method = 'POST' enctype="multipart/form-data">
             {% csrf_token %}
             <table class = "shadow" style= "border-radius:5px; background-color:lightgrey;">
-                {% for field in runoUusi %}
+                {% for field in runouusi %}
                     <tr>
                         <th>{{field.label}}</th>
                         <td>{{ field }}</td>

@@ -6,21 +6,27 @@ from django.http import HttpResponse
 
 # Create your views here.
 
+
 def runoLista(request):
     shelf = RunoDB.objects.order_by('-rate')
-    return render(request, 'runoListaweb.html', {'shelf': shelf})
+    return render(request, 'runoApp/runoListaweb.html', {'shelf': shelf})
+
 
 def runoUusi(request):
-    runoUusi = RunoForm()
+
+    runouusi = RunoForm()
     if request.method == 'POST':
-        runoUusi = RunoForm(request.POST)
-        if runoUusi.is_valid():
-            runoUusi.save()
+        runouusi = RunoForm(request.POST)
+        if runouusi.is_valid():
+            runouusi.save()
             return redirect('runoLista')
         else:
             return HttpResponse("""your form is wrong, reload on <a href = "{{ url : 'runoLista'}}">reload</a>""")
     else:
-        return render(request, 'runoUusiweb.html', {'runoUusi': runoUusi})
+        context = {
+            'runouusi': runouusi
+        }
+        return render(request, 'runoApp/runoUusiweb.html', context)
 
 # def runoKorjaa(request, runo_id):
 #     runo_id = int(runo_id)
