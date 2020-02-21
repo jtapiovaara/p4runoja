@@ -13,7 +13,6 @@ def runoLista(request):
 
 
 def runoUusi(request):
-
     runouusi = RunoForm()
     if request.method == 'POST':
         runouusi = RunoForm(request.POST)
