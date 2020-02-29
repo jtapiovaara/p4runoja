@@ -14,6 +14,14 @@ class RunoDB(models.Model):
         return self.name
 
 
+class RunoRate(models.Model):
+    text = models.CharField(max_length=64, blank=True)
+    rate = models.ForeignKey(RunoDB, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
+
+
 class Kirjoittaja(models.Model):
     name = models.CharField(max_length=64)
     age = models.CharField(max_length=3, blank=True)

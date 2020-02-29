@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>Parhaat runot</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+  {% for paragraph in paragraphs %}
+{#      <img style="width:50%" src="{% static "images/" %}{{ paragraph.picture }}" alt = 'jaahas'>#}
+      <h2>{{ paragraph.name }}</h2>
+      <p>{{ paragraph.caption }}</p>
+  {% endfor %}
+</body>
+</html>
