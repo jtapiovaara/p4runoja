@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -12,6 +13,12 @@ class RunoDB(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-rate']
+
+    def get_absolute_url(self):
+        return reverse('runolista')
 
 
 class RunoRate(models.Model):

@@ -1,60 +1,55 @@
-from django.shortcuts import render
-from .models import RunoDB
 from django.shortcuts import render, redirect
-from .forms import RunoForm
-# from django.http import HttpResponse
-
-from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 from django.template.loader import render_to_string
+from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from weasyprint import HTML
 
-# Create your views here.
+from .models import RunoDB
+
+# Create your views here. Changed to use class based views 2020-03- 05. function based in RunoFuncs -Scratch file
 
 
-def runoLista(request):
-    shelf = RunoDB.objects.order_by('-rate')
-    return render(request, 'runoApp/runoListaweb.html', {'shelf': shelf})
+class RunoList(ListView):
+    model = RunoDB
 
 
-def runoUusi(request):
-    runouusi = RunoForm()
-    if request.method == 'POST':
-        runouusi = RunoForm(request.POST)
-        if runouusi.is_valid():
-            runouusi.save()
-            return redirect('runoLista')
-        else:
-            return HttpResponse("""your form is wrong, reload on <a href = "{{ url : 'runoLista'}}">reload</a>""")
-    else:
-        context = {
-            'runouusi': runouusi
-        }
-        return render(request, 'runoApp/runoUusiweb.html', context)
+class RunoRead(DetailView):
+    model = RunoDB
 
 
-def runoKorjaa(request, runo_id):
-    runo_id = int(runo_id)
-    try:
-        runo_sel = RunoDB.objects.get(id=runo_id)
-    except RunoDB.DoesNotExist:
-        return redirect('runoLista')
-    runo_form = RunoForm(request.POST or None, instance = runo_sel)
-    if runo_form.is_valid():
-       runo_form.save()
-       return redirect('runoLista')
-    return render(request, 'runoApp/runoUusiweb.html', {'runoUusi':runo_form})
+class RunoCreate(CreateView):
+    model = RunoDB
+    fields = ['name',
+              'caption',
+              'author'
+              ]
 
 
-def runoPoista(request, runo_id):
-    runo_id = int(runo_id)
-    try:
-        runo_sel = RunoDB.objects.get(id=runo_id)
-    except RunoDB.DoesNotExist:
-        return redirect('runoLista')
-    runo_sel.delete()
-    return redirect('runoLista')
+class RunoEdit(UpdateView):
+    model = RunoDB
+    fields = ['name',
+              'caption',
+              'author',
+              'picture',
+              'rate'
+              ]
+    template_name_suffix = '_update_form'
+
+
+class RunoDelete(DeleteView):
+    model = RunoDB
+    success_url = reverse_lazy('runolista')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 def html_to_pdf_view(request, *args):
@@ -80,6 +75,7 @@ def html_to_pdf_one_view(request, pk):
     html.write_pdf(target='/tmp/runo.pdf')
 
     fs = FileSystemStorage('/tmp')
+
     with fs.open('runo.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="runo.pdf"'
