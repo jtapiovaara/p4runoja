@@ -1,0 +1,14 @@
+{% extends 'runoApp/base.html' %}
+{% load static %}
+{% block page_content %}
+
+    <div class="container">
+        <h2>Haluatko varmasti poistaa tämän runon?</h2>
+        <form  method="post">
+            {% csrf_token %}
+            <h5>Also in english: "Are you absolutelly sure you want to delete this poem?"</h5>
+            <input  type="submit"  value="Confirm"  />
+        </form>
+    </div>
+
+{% endblock %}

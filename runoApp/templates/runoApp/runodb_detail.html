@@ -1,0 +1,37 @@
+{% extends 'runoApp/base.html' %}
+{% load static %}
+
+{% block page_content %}
+    <style>
+        body{
+            background-color: cornsilk;
+            font-family: Chilanka, cursive, sans-serif;
+        }
+        </style>
+
+<head></head>
+
+<body>
+<div class="container">
+    <div class="card-columns">
+        <div class="card card-body shadow">
+            <h1>{{ runodb.name }}</h1>
+            <br>
+            <h5>{{ runodb.caption | linebreaksbr }}</h5>
+            <br>
+            <br>
+            <hr>
+            <a href="{% url 'runokorjaa' runodb.pk %}"
+               class="btn btn-outline-primary btn-sm">
+                Muokkaa tätä runoa
+            </a>
+            <a href="{% url 'runopoista' runodb.pk %}"
+               class="btn btn-outline-danger btn-sm">
+                Poista runo
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+
+{% endblock %}

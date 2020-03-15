@@ -1,0 +1,82 @@
+{% extends 'runoApp/base.html' %}
+{% load static %}
+<head>
+</head>
+{% block page_content %}
+{#  	<nav class="navbar navbar-expand-lg navbar-light bg-light">#}
+{#        <div class="container">#}
+{#            <a class="navbar-brand" href="{% url 'runouusi' %}">Heittäydy! Luo uusi runo</a>#}
+{#          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#              <span class="navbar-toggler-icon"></span>#}
+{#          </button>#}
+{#            <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#              <ul class="navbar-nav">#}
+{#                  <li class="nav-item active">#}
+{#                      <a class="navbar-brand" href="{% url 'printruno' %}">Tulosta</a>#}
+{#                  </li>#}
+{#	          </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#	</nav>#}
+
+    <body>
+    <div class="container">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner center shadow">
+                <div class="carousel-item active">
+                    <img src="{% static "images/ambitchous.jpg" %}" class="img-fluid">
+                </div>
+                {% for item in object_list %}
+                    <div class="carousel-item ">
+                        <img src="{% static "images/" %}{{ item.picture }}" class="img-fluid">
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{% url 'runouusi' %}">Heittäydy! Luo uusi runo</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                  <li class="nav-item active">
+                      <a class="navbar-brand" href="{% url 'printruno' %}">Tulosta</a>
+                  </li>
+	          </ul>
+            </div>
+    </nav>
+    </div>
+{#    </div>#}
+     <div class="container">
+         <div class="card-columns">
+        {% for runoDB in object_list %}
+            <div class="card card-body shadow">
+                <img class="rounded img-fluid" src="{% static "images/" %}{{ runoDB.picture }}">
+                <a href="{% url 'runolue' runoDB.pk %}"><h2 class="card-title" >{{ runoDB.name  }}</h2></a>
+                <p>{{ runoDB.caption | linebreaksbr  | slice:":150" }}</p>
+                <p>{{ runoDB.author }}</p>
+                <p>Onpa hieno (1-5): {{ runoDB.rate }}</p>
+                <a href="{% url 'printoneruno' runoDB.pk %}"
+                        class="btn btn-outline-info btn-sm">
+                        Ota runo mukaan
+                    </a>
+                <a href="{% url 'runokorjaa' runoDB.pk %}"
+                        class="btn btn-outline-info btn-sm">
+                        Muokkaa tätä runoa
+                    </a>
+            </div>
+        {% endfor %}
+         </div>
+     </div>
+    </body>
+{% endblock %}
+
